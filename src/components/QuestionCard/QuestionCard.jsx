@@ -48,8 +48,6 @@ const QuestionCard = ({ data, nextPage, allAnswers, final }) => {
 
   let visible = Object.values(answer).some((el) => el === true);
 
-  console.log(visible);
-
   return (
     <Container
       onSubmit={(e) =>

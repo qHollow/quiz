@@ -1,0 +1,25 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: [14.x]
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: set -eu
+      - run: mkdir "$HOME/.ssh"
+      - run: echo "${{ secrets.key }}" > "$HOME/.ssh/key"
+      - run: cmod 600 "$HOME/.ssh/key"
+      - run: npm ci
+      - run: npm run build
+      - run: cd dist && rsync -e "ssh -i $HOME/.ssh/key -o  StrictHostKeyChecking=no" --archive --compress --delete . qhollow@qhollow.ru:/var/www/qhollow.ru/html/
