@@ -19,7 +19,7 @@ jobs:
       - run: set -eu
       - run: mkdir "$HOME/.ssh"
       - run: echo "${{ secrets.key }}" > "$HOME/.ssh/key"
-      - run: cmod 600 "$HOME/.ssh/key"
+      - run: chmod 600 "$HOME/.ssh/key"
       - run: npm ci
       - run: npm run build
       - run: cd dist && rsync -e "ssh -i $HOME/.ssh/key -o  StrictHostKeyChecking=no" --archive --compress --delete . qhollow@qhollow.ru:/var/www/qhollow.ru/html/
